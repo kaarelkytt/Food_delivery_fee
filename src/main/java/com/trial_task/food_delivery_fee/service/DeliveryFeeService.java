@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -18,6 +17,9 @@ import java.util.Map;
  */
 @Service
 public class DeliveryFeeService {
+
+    @Value("#{${city.baseFee}}")
+    private Map<String, Map<String, Double>> cityBaseFees;
 
     @Value("#{${cityToStationMap}}")
     private Map<String, String> cityToStationMap;
@@ -87,40 +89,9 @@ public class DeliveryFeeService {
      * @param city The city where the delivery is to be made.
      * @param vehicleType The type of vehicle used for the delivery.
      * @return The base fee.
-     * @throws ForbiddenVehicleTypeException If the vehicle type is not allowed.
-     * @throws ForbiddenCityException If the city is not allowed.
      */
-    private double calculateBaseFee(String city, String vehicleType) throws ForbiddenVehicleTypeException, ForbiddenCityException {
-        // TODO Load data from an external source
-        if (city.equals("Tallinn")){
-            if (vehicleType.equals("car")){
-                return 4;
-            } else if (vehicleType.equals("scooter")) {
-                return 3.5;
-            } else if (vehicleType.equals("bike")) {
-                return 3;
-            }
-            throw new ForbiddenVehicleTypeException("Invalid vehicle type: " + vehicleType);
-        } else if (city.equals("Tartu")) {
-            if (vehicleType.equals("car")){
-                return 3.5;
-            } else if (vehicleType.equals("scooter")) {
-                return 3;
-            } else if (vehicleType.equals("bike")) {
-                return 2.5;
-            }
-            throw new ForbiddenVehicleTypeException("Invalid vehicle type: " + vehicleType);
-        } else if (city.equals("Pärnu")) {
-            if (vehicleType.equals("car")){
-                return 3;
-            } else if (vehicleType.equals("scooter")) {
-                return 2.5;
-            } else if (vehicleType.equals("bike")) {
-                return 2;
-            }
-            throw new ForbiddenVehicleTypeException("Invalid vehicle type: " + vehicleType);
-        }
-        throw new ForbiddenCityException("Invalid city:" + city);
+    private double calculateBaseFee(String city, String vehicleType) {
+        return cityBaseFees.get(city).get(vehicleType);
     }
 
     /**
