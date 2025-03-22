@@ -36,7 +36,7 @@ public class WeatherDataCronJob {
     private final WeatherDataService weatherDataService;
     private final RestTemplate restTemplate;
 
-    @Value("#{${cityToStationMap}}")
+    @Value("#{${weatherdata.cityToStationMap}}")
     private Map<String, String> cityToStationMap;
 
     @Value("${weatherdata.api.url}")
@@ -88,7 +88,7 @@ public class WeatherDataCronJob {
      * @param xmlData The XML weather data.
      * @return A list of WeatherData objects.
      */
-    private List<WeatherData> parseWeatherData(String xmlData) {
+    private List<WeatherData> parseWeatherData(String xmlData) throws WeatherDataParsingException {
         List<WeatherData> weatherDataList = new ArrayList<>();
 
         try {

@@ -8,7 +8,6 @@ import com.trial_task.food_delivery_fee.model.WeatherData;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
