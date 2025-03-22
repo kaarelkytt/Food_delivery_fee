@@ -54,7 +54,7 @@ public class DeliveryFeeService {
 
         // Calculate the delivery fee based on the provided rules
         double baseFee = calculateBaseFee(city, vehicleType);
-        double airTemperatureExtraFee = weatherFeeService.calculateAirTemperatureExtraFee(vehicleType, weatherData.get());;
+        double airTemperatureExtraFee = weatherFeeService.calculateAirTemperatureExtraFee(vehicleType, weatherData.get());
         double windSpeedExtraFee = weatherFeeService.calculateWindSpeedExtraFee(vehicleType, weatherData.get());
         double weatherPhenomenonExtraFee = weatherFeeService.calculateWeatherPhenomenonExtraFee(vehicleType, weatherData.get());
 
