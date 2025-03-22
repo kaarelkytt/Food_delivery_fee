@@ -2,13 +2,12 @@ package com.trial_task.food_delivery_fee.service;
 
 import com.trial_task.food_delivery_fee.model.WeatherData;
 import com.trial_task.food_delivery_fee.repository.WeatherDataRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Service class for managing weather data.
@@ -17,7 +16,7 @@ import java.util.Map;
 public class WeatherDataService {
     private final WeatherDataRepository weatherDataRepository;
 
-    @Value("#{${cityToStationMap}}")
+    @Value("#{${weatherdata.cityToStationMap}}")
     private Map<String, String> cityToStationMap;
 
     /**
@@ -25,7 +24,6 @@ public class WeatherDataService {
      *
      * @param weatherDataRepository The repository for accessing weather data in the database.
      */
-    @Autowired
     public WeatherDataService(WeatherDataRepository weatherDataRepository) {
         this.weatherDataRepository = weatherDataRepository;
     }
@@ -63,13 +61,10 @@ public class WeatherDataService {
      * @param city The city for which to fetch the latest weather data.
      * @return The latest weather data for the city, or null if there is no data for the city.
      */
-    public WeatherData getLatest(String city) {
+    public Optional<WeatherData> getLatest(String city) {
         String stationName = cityToStationMap.get(city);
 
-        // Fetch the latest WeatherData for the station
-        List<WeatherData> weatherDataList = weatherDataRepository.findLatestByStationName(stationName, PageRequest.of(0, 1));
-
-        // Return the latest WeatherData, or null if there is no data for the station
-        return weatherDataList.isEmpty() ? null : weatherDataList.getFirst();
+        // Return the latest weather data for the specified station
+        return weatherDataRepository.findFirstByStationNameOrderByObservationTimestampDesc(stationName);
     }
 }
