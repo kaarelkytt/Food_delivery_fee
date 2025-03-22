@@ -32,6 +32,14 @@ public class DeliveryFee {
         this.totalFee = totalFee();
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
     public double getRegionalBaseFee() {
         return regionalBaseFee;
     }
