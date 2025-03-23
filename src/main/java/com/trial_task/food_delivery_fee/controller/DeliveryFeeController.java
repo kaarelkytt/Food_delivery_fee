@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/deliveryFee")
 public class DeliveryFeeController {
 
-    // Service for calculating delivery fees.
     private final DeliveryFeeService deliveryFeeService;
 
     public DeliveryFeeController(DeliveryFeeService deliveryFeeService) {
@@ -30,7 +29,7 @@ public class DeliveryFeeController {
     /**
      * Calculates the delivery fee based on the city and vehicle type.
      *
-     * @param city The city where the delivery is to be made.
+     * @param city        The city where the delivery is to be made.
      * @param vehicleType The type of vehicle used for the delivery.
      * @return The calculated delivery fee or an error message if the vehicle type is forbidden or
      * when vehicle type or city is not supported.

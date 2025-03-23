@@ -15,11 +15,11 @@ public class DeliveryFee {
     /**
      * Constructs a DeliveryFee object with the given parameters.
      *
-     * @param city The city where the delivery is to be made.
-     * @param vehicleType The type of vehicle used for the delivery.
-     * @param regionalBaseFee The regional base fee for the delivery.
-     * @param airTemperatureExtraFee The extra fee based on air temperature.
-     * @param windSpeedExtraFee The extra fee based on wind speed.
+     * @param city                      The city where the delivery is to be made.
+     * @param vehicleType               The type of vehicle used for the delivery.
+     * @param regionalBaseFee           The regional base fee for the delivery.
+     * @param airTemperatureExtraFee    The extra fee based on air temperature.
+     * @param windSpeedExtraFee         The extra fee based on wind speed.
      * @param weatherPhenomenonExtraFee The extra fee based on weather phenomenon.
      */
     public DeliveryFee(String city, String vehicleType, double regionalBaseFee, double airTemperatureExtraFee, double windSpeedExtraFee, double weatherPhenomenonExtraFee) {
@@ -29,7 +29,7 @@ public class DeliveryFee {
         this.airTemperatureExtraFee = airTemperatureExtraFee;
         this.windSpeedExtraFee = windSpeedExtraFee;
         this.weatherPhenomenonExtraFee = weatherPhenomenonExtraFee;
-        this.totalFee = totalFee();
+        this.totalFee = calculateTotalFee();
     }
 
     public String getCity() {
@@ -60,12 +60,7 @@ public class DeliveryFee {
         return totalFee;
     }
 
-    /**
-     * Calculates the total delivery fee.
-     *
-     * @return The total delivery fee.
-     */
-    private double totalFee(){
+    private double calculateTotalFee() {
         return regionalBaseFee + airTemperatureExtraFee + windSpeedExtraFee + weatherPhenomenonExtraFee;
     }
 

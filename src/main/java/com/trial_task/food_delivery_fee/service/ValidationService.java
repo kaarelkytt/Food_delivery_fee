@@ -19,10 +19,10 @@ public class ValidationService {
     /**
      * Validates the city and vehicle type.
      *
-     * @param city The city to validate.
+     * @param city        The city to validate.
      * @param vehicleType The vehicle type to validate.
      * @throws ForbiddenVehicleTypeException If the vehicle type is not allowed.
-     * @throws ForbiddenCityException If the city is not allowed.
+     * @throws ForbiddenCityException        If the city is not allowed.
      */
     public void validateCityAndVehicleType(String city, String vehicleType) throws ForbiddenCityException, ForbiddenVehicleTypeException {
         if (!cityToStationMap.containsKey(city) && !cityBaseFees.containsKey(city)) {

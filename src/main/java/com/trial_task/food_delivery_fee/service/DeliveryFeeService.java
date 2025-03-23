@@ -24,6 +24,13 @@ public class DeliveryFeeService {
     private final ValidationService validationService;
     private final WeatherFeeService weatherFeeService;
 
+    /**
+     * Constructs a DeliveryFeeService object with the given dependencies.
+     *
+     * @param weatherDataService The service for managing weather data.
+     * @param validationService  The service for validating delivery fee calculations.
+     * @param weatherFeeService  The service for calculating additional fees based on weather conditions.
+     */
     public DeliveryFeeService(WeatherDataService weatherDataService,
                               ValidationService validationService,
                               WeatherFeeService weatherFeeService) {
@@ -35,20 +42,21 @@ public class DeliveryFeeService {
     /**
      * Calculates the delivery fee for a specific city and vehicle type.
      *
-     * @param city The city where the delivery is to be made.
+     * @param city        The city where the delivery is to be made.
      * @param vehicleType The type of vehicle used for the delivery.
      * @return The calculated delivery fee.
      * @throws ForbiddenVehicleTypeException If the vehicle type is not allowed.
-     * @throws ForbiddenCityException If the city is not allowed.
+     * @throws ForbiddenCityException        If the city is not allowed.
      */
     public DeliveryFee calculateFee(String city, String vehicleType) throws ForbiddenVehicleTypeException, ForbiddenCityException, WeatherDataFetchException {
+        // Validate the city and vehicle type and throw an exception if they are not allowed
         validationService.validateCityAndVehicleType(city, vehicleType);
 
         // Fetch the latest weather data for the city
         Optional<WeatherData> weatherData = weatherDataService.getLatest(city);
 
         // If the weather data for the city is unavailable, throw an exception
-        if (weatherData.isEmpty()){
+        if (weatherData.isEmpty()) {
             throw new WeatherDataFetchException("No weather data available for the city: " + city);
         }
 
@@ -70,7 +78,7 @@ public class DeliveryFeeService {
     /**
      * Calculates the base fee for a specific city and vehicle type.
      *
-     * @param city The city where the delivery is to be made.
+     * @param city        The city where the delivery is to be made.
      * @param vehicleType The type of vehicle used for the delivery.
      * @return The base fee.
      */

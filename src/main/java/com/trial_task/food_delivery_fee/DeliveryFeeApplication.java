@@ -11,13 +11,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class DeliveryFeeApplication {
 
-	/**
-	 * The main method that starts the Spring Boot application.
-	 *
-	 * @param args Command line arguments passed to the application.
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(DeliveryFeeApplication.class, args);
-	}
+    /**
+     * The main method that starts the Spring Boot application.
+     *
+     * @param args Command line arguments passed to the application.
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(DeliveryFeeApplication.class, args);
+    }
 
 }

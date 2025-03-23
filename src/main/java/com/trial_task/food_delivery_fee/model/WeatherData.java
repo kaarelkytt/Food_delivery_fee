@@ -37,18 +37,20 @@ public class WeatherData {
 
     private LocalDateTime observationTimestamp;
 
-    // Default constructor
+    /**
+     * Default constructor for creating a WeatherData object.
+     */
     public WeatherData() {
     }
 
     /**
      * Constructs a WeatherData object with the given parameters.
      *
-     * @param stationName The name of the weather station.
-     * @param WMOCode The WMO code of the weather station.
-     * @param airTemperature The air temperature at the weather station.
-     * @param windSpeed The wind speed at the weather station.
-     * @param weatherPhenomenon The weather phenomenon observed at the weather station.
+     * @param stationName          The name of the weather station.
+     * @param WMOCode              The WMO code of the weather station.
+     * @param airTemperature       The air temperature at the weather station.
+     * @param windSpeed            The wind speed at the weather station.
+     * @param weatherPhenomenon    The weather phenomenon observed at the weather station.
      * @param observationTimestamp The timestamp of the weather observation.
      */
     public WeatherData(String stationName, String WMOCode, double airTemperature, double windSpeed, String weatherPhenomenon, LocalDateTime observationTimestamp) {
@@ -74,6 +76,10 @@ public class WeatherData {
 
     public String getWeatherPhenomenon() {
         return weatherPhenomenon;
+    }
+
+    public LocalDateTime getObservationTimestamp() {
+        return observationTimestamp;
     }
 
     public void setObservationTimestamp(LocalDateTime observationTimestamp) {

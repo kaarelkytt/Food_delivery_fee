@@ -29,21 +29,13 @@ public class WeatherDataService {
     /**
      * Constructor for the WeatherDataService class.
      *
-     * @param weatherDataRepository The repository for accessing weather data in the database.
+     * @param weatherDataRepository The repository for storing weather data.
+     * @param weatherDataFetcher    The service for fetching weather data.
      */
     public WeatherDataService(WeatherDataRepository weatherDataRepository,
                               WeatherDataFetcher weatherDataFetcher) {
         this.weatherDataRepository = weatherDataRepository;
         this.weatherDataFetcher = weatherDataFetcher;
-    }
-
-    /**
-     * Fetches all weather data from the database.
-     *
-     * @return A list of all weather data.
-     */
-    public List<WeatherData> getAllWeatherData() {
-        return weatherDataRepository.findAll();
     }
 
     /**
@@ -54,16 +46,23 @@ public class WeatherDataService {
      */
     public Optional<WeatherData> getLatest(String city) {
         String stationName = cityToStationMap.get(city);
-
-        // Return the latest weather data for the specified station
         return weatherDataRepository.findFirstByStationNameOrderByObservationTimestampDesc(stationName);
     }
 
+    /**
+     * Updates the weather data by fetching new data from the API and saving it to the database.
+     *
+     * @throws WeatherDataParsingException If there is an error parsing the weather data.
+     * @throws WeatherDataFetchException   If there is an error fetching the weather data.
+     */
     public void updateWeatherData() throws WeatherDataParsingException, WeatherDataFetchException {
         List<WeatherData> weatherDataList = weatherDataFetcher.fetchWeatherData();
         weatherDataRepository.saveAll(weatherDataList);
     }
 
+    /**
+     * Initializes the weather data by fetching it once at startup.
+     */
     @PostConstruct
     public void initializeWeatherData() {
         log.info("Fetching initial weather data...");
