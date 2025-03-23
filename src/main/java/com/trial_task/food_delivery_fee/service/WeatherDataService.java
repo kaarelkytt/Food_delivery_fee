@@ -1,7 +1,12 @@
 package com.trial_task.food_delivery_fee.service;
 
+import com.trial_task.food_delivery_fee.exception.WeatherDataFetchException;
+import com.trial_task.food_delivery_fee.exception.WeatherDataParsingException;
 import com.trial_task.food_delivery_fee.model.WeatherData;
 import com.trial_task.food_delivery_fee.repository.WeatherDataRepository;
+import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +19,9 @@ import java.util.Optional;
  */
 @Service
 public class WeatherDataService {
+    private static final Logger log = LoggerFactory.getLogger(WeatherDataService.class);
     private final WeatherDataRepository weatherDataRepository;
+    private final WeatherDataFetcher weatherDataFetcher;
 
     @Value("#{${weatherdata.cityToStationMap}}")
     private Map<String, String> cityToStationMap;
@@ -24,8 +31,10 @@ public class WeatherDataService {
      *
      * @param weatherDataRepository The repository for accessing weather data in the database.
      */
-    public WeatherDataService(WeatherDataRepository weatherDataRepository) {
+    public WeatherDataService(WeatherDataRepository weatherDataRepository,
+                              WeatherDataFetcher weatherDataFetcher) {
         this.weatherDataRepository = weatherDataRepository;
+        this.weatherDataFetcher = weatherDataFetcher;
     }
 
     /**
@@ -35,24 +44,6 @@ public class WeatherDataService {
      */
     public List<WeatherData> getAllWeatherData() {
         return weatherDataRepository.findAll();
-    }
-
-    /**
-     * Saves a weather data object to the database.
-     *
-     * @param weatherData The weather data object to save.
-     */
-    public void save(WeatherData weatherData) {
-        weatherDataRepository.save(weatherData);
-    }
-
-    /**
-     * Saves a list of weather data objects to the database.
-     *
-     * @param weatherDataList The list of weather data objects to save.
-     */
-    public void saveAll(List<WeatherData> weatherDataList) {
-        weatherDataRepository.saveAll(weatherDataList);
     }
 
     /**
@@ -66,5 +57,21 @@ public class WeatherDataService {
 
         // Return the latest weather data for the specified station
         return weatherDataRepository.findFirstByStationNameOrderByObservationTimestampDesc(stationName);
+    }
+
+    public void updateWeatherData() throws WeatherDataParsingException, WeatherDataFetchException {
+        List<WeatherData> weatherDataList = weatherDataFetcher.fetchWeatherData();
+        weatherDataRepository.saveAll(weatherDataList);
+    }
+
+    @PostConstruct
+    public void initializeWeatherData() {
+        log.info("Fetching initial weather data...");
+        try {
+            updateWeatherData();
+            log.info("Initial weather data fetch successful");
+        } catch (WeatherDataParsingException | WeatherDataFetchException e) {
+            log.error(e.getMessage());
+        }
     }
 }
